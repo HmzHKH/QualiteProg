@@ -35,7 +35,7 @@ void fauve::PiegeAPic(const Point& p,std::vector<piegeAPic> &pieges, std::vector
             if(pieges[i].d_actif)
             {
                 killFauve(p,fauves);
-                pieges[i].increaseEmpile();
+                pieges[i].increaseTaille();
             }    
         }
     }
