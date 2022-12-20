@@ -1,3 +1,6 @@
+#ifndef PIEGE_H
+#define PIEGE_H
+
 #include "entity.h"
 
 class piege : public StaticEntity
@@ -9,12 +12,27 @@ public:
 class piegeAPic : public piege
 {
 public:
-    piegeAPic();
+    piegeAPic(const Point& pos, int taille);
     Point position() const override;
     bool estActif() const override;
-    void increaseEmpile();
+    int taille() const;
+    void increaseTaille();
 private:
     Point d_pos;
     bool d_actif;
-    int d_empile;
-}
+    int d_taille;
+};
+
+
+
+#endif // PIEGE_H
+
+
+
+
+
+
+
+
+
+
