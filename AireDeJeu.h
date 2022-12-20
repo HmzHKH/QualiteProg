@@ -10,6 +10,8 @@ public:
     AireDeJeu(std::vector<std::vector<int>> tab2D);
     bool estDansTableau(const Point& p) const; //Renvoi si un point est dans le tableau
     bool estOccupe(const Point& p) const; //Renvoi si une case est occupée (case pas égale à 0)
+    bool import(const std::string& fichier);
+    bool export(const std::string& fichier);
 private:
     std::vector<std::vector<int>> d_Tab; 
 };
