@@ -1,3 +1,4 @@
+
 #include "doctest.h"
 #include "piege.h"
 
@@ -15,7 +16,8 @@ TEST_CASE("Le piege à pic fonctionne")
     SUBCASE("test si le piege à pic est cree a la position donnee en parametre")
     {
         Point position = p.position();
-        REQUIRE_EQ(pos, position);    //test si la position est correcte
+        REQUIRE_EQ(pos.x, position.x);    //test si la position est correcte
+        REQUIRE_EQ(pos.y, position.y);
     }
     SUBCASE("test si le piege à pic est cree avec la taille donnee en parametre")
     {
@@ -24,7 +26,7 @@ TEST_CASE("Le piege à pic fonctionne")
     }
     SUBCASE("test si piege à pic se desactive quand il est plein")
     {
-        for( int i = 0 ; i < p.taille() ; i++ )
+        for( int i = p.taille()-1 ; i >= 0 ; --i )
         {
             p.increaseTaille();
         }

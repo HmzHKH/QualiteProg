@@ -1,6 +1,6 @@
 #include"AireDeJeu.h"
 
-AireDeJeu::AireDeJeu(std::vector<std::vector<int>> tab2D):
+AireDeJeu::AireDeJeu(const std::vector<std::vector<int>> &tab2D):
     d_Tab{tab2D}
 {}
 
@@ -22,7 +22,7 @@ bool AireDeJeu::estOccupe(const Point& p) const
     }
 }
 
-Point AireDeJeu::posJoueur(Const joueur& j) const
+Point AireDeJeu::posJoueur(const joueur& j) const
 {
     return j.position();
 }

@@ -1,3 +1,6 @@
+#ifndef PIEGE_H
+#define PIEGE_H
+
 #include "entity.h"
 
 class piege : public StaticEntity
@@ -18,4 +21,18 @@ private:
     Point d_pos;
     bool d_actif;
     int d_taille;
-}
+};
+
+
+
+#endif // PIEGE_H
+
+
+
+
+
+
+
+
+
+
