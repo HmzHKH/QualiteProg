@@ -6,6 +6,7 @@
 #include <iostream>
 #include <memory>
 
+//A changer avec une classe Point
 struct Point{int x,y;}; //Temporaire, sera mis dans le "mainWindow"
 
 class AireDeJeu;

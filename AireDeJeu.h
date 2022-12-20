@@ -20,20 +20,12 @@ public:
     Point posJoueur(const joueur& j) const;// renvoie la position du joueur au moment donnée
     bool estOccupeType(int e, const Point& p) const; //renvoie si un type  d'entite occupe la position p du  tableau
 
-
-
+    bool import(const std::string& fichier);
+    bool export(const std::string& fichier);
 private:
-    std::vector<std::vector<int>> d_Tab;
+    std::vector<std::vector<int>> d_Tab; 
 };
 
-
-
-
-
-
-
-
-#endif // AIREDEJEU_H
-
+    
 
 
