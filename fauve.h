@@ -9,37 +9,33 @@ class joueur;
 
 class fauve : public DynamicEntity{
 public:
-    fauve(const Point& pos);
-
-    Point position() const override;
+    fauve(const point& pos);
+    point position() const override;
     bool estVivant() const override;
-    virtual void deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<fauve>> &fauves, std::vector<piegeAPic> &pieges) = 0;
-
-
-
+    virtual void deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<fauve>> &fauves, std::vector<std::unique_ptr<piegeAPic>> &pieges) = 0;
 protected:
-    Point d_pos;
+    point d_pos;
     bool d_alive;
 };
 
-void killFauve(const Point& p,std::vector<std::unique_ptr<fauve>> &fauves);
+void killFauve(const point& p,std::vector<std::unique_ptr<fauve>> &fauves);
 
 //A modifier
-void PiegeAPic(const Point& p,std::vector<piegeAPic> &pieges, std::vector<std::unique_ptr<fauve>> &fauves);
+void PiegeAPic(const point& p,std::vector<std::unique_ptr<piegeAPic>> &pieges, std::vector<std::unique_ptr<fauve>> &fauves);
 
 
 // Avance sans diagonales
 class lion : public fauve{
 public:
-    lion(const Point& pos);
-    void deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<fauve>> &fauves, std::vector<piegeAPic> &pieges) override;
+    lion(const point& pos);
+    void deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<fauve>> &fauves, std::vector<std::unique_ptr<piegeAPic>> &pieges) override;
 };
 
 // Avance avec diagonales
 class tigre : public fauve{
 public:
-    tigre(const Point& pos);
-    void deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<fauve>> &fauves, std::vector<piegeAPic> &pieges) override;
+    tigre(const point& pos);
+    void deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<fauve>> &fauves, std::vector<std::unique_ptr<piegeAPic>> &pieges) override;
 };
 
 

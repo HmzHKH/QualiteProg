@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 
-bool gameOver = true;
+bool gameOver = true; // Mettre false pour que ca fonctionne
 bool menu = true;
 
 
@@ -37,7 +37,7 @@ void jouer()
             x[i][j]=0;
         }
     }
-    Point pn {8,5};
+    point pn {8,5};
 
     AireDeJeu e{x};
     joueurNormal j{pn};
@@ -48,10 +48,9 @@ void jouer()
     std::vector<std::unique_ptr<fauve>> fauves;
     fauves.push_back(std::make_unique<lion>(pn));
     fauves.push_back(std::make_unique<tigre>(pn));
-    std::vector<piegeAPic> pieges;
-    Point pi {5,5};
-    piegeAPic pap{pi,4};
-    pieges.push_back(pap);
+    std::vector<std::unique_ptr<piegeAPic>> pieges;
+    point pi {5,5};
+    pieges.push_back(std::make_unique<piegeAPic>(pi,4));
     //initAireDeJeu(AdJ);
     while (!gameOver && fauves[k]!=nullptr)
     {
@@ -89,10 +88,6 @@ void afficheAiredj(const std::vector<std::vector<int>>& ADJ)//affichage du table
         std::cout<<std::endl;
     }
 }
-
-
-
-
 
 
 
