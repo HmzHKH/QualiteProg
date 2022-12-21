@@ -14,8 +14,7 @@ TEST_CASE("test sur la creation d'un lion")
     SUBCASE("test si le lion est cree a la position donnee en parametre")
     {
         point position = l.position();
-        REQUIRE_EQ(pos.x(), position.x());    //test si la position est correcte
-        REQUIRE_EQ(pos.y(), position.y());
+        REQUIRE_EQ(pos, position);    //test si la position est correcte
     }
 }
 
@@ -31,8 +30,7 @@ TEST_CASE("test sur la creation d'un tigre")
     SUBCASE("test si le tigre est cree a la position donnee en parametre")
     {
         point position = t.position();
-        REQUIRE_EQ(pos.x(), position.x());    //test si la position est correcte
-        REQUIRE_EQ(pos.y(), position.y());
+        REQUIRE_EQ(pos, position);    //test si la position est correcte
     }
 }
 //A corriger

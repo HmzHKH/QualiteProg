@@ -13,8 +13,7 @@ TEST_CASE("Création d'un joueur Normal")
     SUBCASE("test si la position donnée en parametre est celle du joueur")
     {
         point position = j.position();
-        REQUIRE_EQ(pos.x(), position.x());
-        REQUIRE_EQ(pos.y(), position.y());
+        REQUIRE_EQ(pos, position);
     }
 }
 
@@ -30,8 +29,7 @@ TEST_CASE("Création d'un joueur Expert")
     SUBCASE("test si la position donnée en parametre est celle du joueur")
     {
         point position = j.position();
-        REQUIRE_EQ(pos.x(), position.x());
-        REQUIRE_EQ(pos.y(), position.y());
+        REQUIRE_EQ(pos, position);
     }
 }
 TEST_CASE("Test le temps de survie du joueur")
