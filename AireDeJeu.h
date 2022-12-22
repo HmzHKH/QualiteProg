@@ -11,16 +11,17 @@ class point;
 // 1 dans le tableau = Joueur
 // 2 dans le tableau = Lion
 // 3 dans le tableau = Tigre
-// 4 dans le tableau = StaticEntity
+// 4 dans le tableau = PiegeAPic
 
 class AireDeJeu{
 public:
     AireDeJeu(const std::vector<std::vector<int>> &tab2D);
+    AireDeJeu(int largeur, int hauteur); // Initialise un tab avec des 0
     bool estDansTableau(const point& p) const; //Renvoi si un point est dans le tableau
     bool estLibre(const point& p) const; //Renvoi si une case est libre (égale à 0)
-    point posJoueur(const joueur& j) const;// renvoie la position du joueur au moment donnée
     bool estOccupeType(int e, const point& p) const; //renvoie si un type  d'entite occupe la position p du  tableau
-
+    point posJoueur() const;// renvoie la position du joueur au moment donnée
+    void affiche() const;
     bool import(const std::string &fichier);
     bool export(const std::string &fichier);
 private:

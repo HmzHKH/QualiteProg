@@ -22,21 +22,20 @@ void killFauve(const point& p,std::vector<std::unique_ptr<fauve>> &fauves)
 {
     for(int i=0; i<fauves.size();i++)
     {
-        if(fauves[i]->position().x()==p.x() && fauves[i]->position().y()==p.y())
+        if(fauves[i]->position()==p)
         {
-
             std::swap(fauves[i],fauves[fauves.size()-1]);
             fauves.pop_back();
         }
     }
 }
 
-//A modifier
-void PiegeAPic(const point& p, std::vector<std::unique_ptr<piegeAPic>> &pieges, std::vector<std::unique_ptr<fauve>> &fauves)  // fonction qui s'occupe de verifier si dans la position p il y a un piege et si oui on tue le fauve dans cette pos et empile le piege
+
+void killPiegeAPic(const point& p, std::vector<std::unique_ptr<piegeAPic>> &pieges, std::vector<std::unique_ptr<fauve>> &fauves)  // fonction qui s'occupe de verifier si dans la position p il y a un piege et si oui on tue le fauve dans cette pos et empile le piege
 {
-    for(int i=0; i<fauves.size();i++)
+    for(int i=0; i<pieges.size();i++)
     {
-        if(pieges[i]->position().x()==p.x() && pieges[i]->position().y()==p.y())
+        if(pieges[i]->position()==p)
         {
             if(pieges[i]->estActif())
             {
@@ -85,7 +84,7 @@ void lion::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<fa
     else if(AdJ.estOccupeType(4,temp)) // si le lion  avance vers un piege il se deplace et meurt si le piege n'est pas vide(pour le moment il y a pas d'arbres)
     {
         d_pos=temp;
-        PiegeAPic(d_pos,pieges,fauves);//on empile et on tue le tigre s'il est sur un piege actif
+        killPiegeAPic(d_pos,pieges,fauves);//on empile et on tue le tigre s'il est sur un piege actif
     }
 
     else if(AdJ.estOccupeType(1,temp))
@@ -124,7 +123,7 @@ void tigre::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<f
         else
             temp.sety(temp.y()-1); //si le tigre est en haut du joueur il avancera vers le bas
     }
-    
+
     else//deplace le tigre en diagonale
     {
         if(d_pos.y()<j.position().y())
@@ -151,7 +150,7 @@ void tigre::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<f
     else if(AdJ.estOccupeType(4,temp))// si le tigre avance vers un piege il se deplace et meurt si le piege n'est pas vide(pour le moment il y a pas d'arbres)
     {
         d_pos=temp;
-        PiegeAPic(d_pos,pieges,fauves);
+        killPiegeAPic(d_pos,pieges,fauves);
     }
 
     else if(AdJ.estOccupeType(1,temp))// si le tigre avance vers le joueur et le tue

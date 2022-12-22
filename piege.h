@@ -23,5 +23,4 @@ private:
     int d_taille;
 };
 
-
 #endif // PIEGE_H

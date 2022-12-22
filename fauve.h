@@ -19,9 +19,7 @@ protected:
 };
 
 void killFauve(const point& p,std::vector<std::unique_ptr<fauve>> &fauves);
-
-//A modifier
-void PiegeAPic(const point& p,std::vector<std::unique_ptr<piegeAPic>> &pieges, std::vector<std::unique_ptr<fauve>> &fauves);
+void killPiegeAPic(const point& p,std::vector<std::unique_ptr<piegeAPic>> &pieges, std::vector<std::unique_ptr<fauve>> &fauves);
 
 
 // Avance sans diagonales

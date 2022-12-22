@@ -5,6 +5,19 @@
 
 AireDeJeu::AireDeJeu(const std::vector<std::vector<int>> &tab2D): d_Tab{tab2D}
 {}
+AireDeJeu::AireDeJeu(int largeur, int hauteur): d_Tab{}
+{
+    d_Tab.resize(hauteur);
+    for(int i=0;i<d_Tab.size();i++)
+    {
+        
+        d_Tab[i].resize(largeur);
+        for(int j =0; j<d_Tab[i].size();j++)
+        {
+            d_Tab[i][j]=0;
+        }
+    }
+}
 
 bool AireDeJeu::estDansTableau(const point& p) const
 {
@@ -20,16 +33,42 @@ bool AireDeJeu::estLibre(const point& p) const
     return d_Tab[p.x()][p.y()] == 0;
 }
 
-point AireDeJeu::posJoueur(const joueur& j) const
-{
-    return j.position();
-}
-
-
 bool AireDeJeu::estOccupeType(int e, const point& p) const
 {
     return d_Tab[p.x()][p.y()]==e;
+}
 
+point AireDeJeu::posJoueur() const
+{
+    for(int i = 0; i < d_Tab.size(); i++)
+    {
+        for(int j = 0; j < d_Tab[j].size(); j++)
+            if(d_Tab[i][j] == 1)
+            {
+                return point{i,j};
+            }
+    }
+}
+
+void AireDeJeu::affiche() const
+{
+    for(int i=0; i<d_Tab.size();i++)
+    {
+        for(int j=0;j<d_Tab[0].size();j++)
+        {
+            if(d_Tab[i][j]==0)
+                std::cout<<'|'<<" "<<'|';
+            else if(d_Tab[i][j]==1)
+                std::cout<<'|'<<'J'<<'|';
+            else if(d_Tab[i][j]==2)
+                std::cout<<'|'<<'L'<<'|';
+            else if(d_Tab[i][j]==3)
+                std::cout<<'|'<<'T'<<'|';
+            else if(d_Tab[i][j]==4)
+                std::cout<<'|'<<'P'<<'|';
+        }
+        std::cout<<std::endl;
+    }
 }
 
 // MES AJOUTS:

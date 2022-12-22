@@ -64,7 +64,7 @@ TEST_CASE("test tableau de fauve")
     {
         int taille1 = fauves.size();
         int nb1 = pieges[0]->taille();
-        PiegeAPic(pos1,pieges,fauves);
+        killPiegeAPic(pos1,pieges,fauves);
         int taille2 = fauves.size();
         int nb2 = pieges[0]->taille();
         REQUIRE_LT(taille2,taille1);  //test si taille2 < taille1 et donc qu'on a tuer un fauve

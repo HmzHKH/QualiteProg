@@ -8,6 +8,7 @@ public:
     int y() const;
     void setx(int x);
     void sety(int y);
+friend bool operator==(const point& p1,const point& p2);
 private:
     int d_x;
     int d_y;
