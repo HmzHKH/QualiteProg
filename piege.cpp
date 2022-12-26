@@ -1,9 +1,9 @@
 #include "piege.h"
 #include "AireDeJeu.h"
 
-piegeAPic::piegeAPic(const Point& pos, int taille) : d_pos{pos}, d_actif{true}, d_taille{taille} {}
+piegeAPic::piegeAPic(const point& pos, int taille) : d_pos{pos}, d_actif{true}, d_taille{taille} {}
 
-Point piegeAPic::position() const
+point piegeAPic::position() const
 {
     return d_pos;
 }

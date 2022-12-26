@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include <memory>
+#include "point.h"
 
 //A changer avec une classe Point
 struct Point{int x,y;}; //Temporaire, sera mis dans le "mainWindow"
@@ -17,7 +18,7 @@ class joueur;
 class Entity{
 public:
     virtual ~Entity() = default;
-    virtual Point position() const = 0;
+    virtual point position() const = 0;
 
 };
 
@@ -25,10 +26,7 @@ class DynamicEntity : public Entity{
 
 public:
     virtual ~DynamicEntity() = default;
-
-
     virtual bool estVivant() const = 0;
-
 };
 
 class StaticEntity : public Entity{

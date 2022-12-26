@@ -3,7 +3,7 @@
 
 
 
-joueur::joueur(const Point& pos) : d_pos{pos}, d_alive{true}, d_lifetime{0}
+joueur::joueur(const point& pos) : d_pos{pos}, d_alive{true}, d_lifetime{0}
 {}
 
 int joueur::lifetime() const
@@ -24,79 +24,79 @@ bool joueur::estVivant() const
 }
 
 
-Point joueur::position() const
+point joueur::position() const
 {
     return d_pos;
 }
 
 
 
-joueurNormal::joueurNormal(const Point& pos) : joueur{pos}
+joueurNormal::joueurNormal(const point& pos) : joueur{pos}
 {}
 
 
 void joueurNormal::deplacement( AireDeJeu& AdJ,int valeur)
 {
-    Point d_temp = d_pos;
+    point d_temp = d_pos;
     switch(valeur)
     {
         case 1:
-            d_temp.x--;
-            d_temp.y++;
-            if(AdJ.estDansTableau(d_temp) && !AdJ.estOccupe(d_temp))
+            d_temp.setx(d_temp.x()-1);
+            d_temp.sety(d_temp.y()+1);
+            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
             {
                 d_pos = d_temp;
                 break;
             }
 
         case 2:
-            d_temp.y++;
-            if(AdJ.estDansTableau(d_temp) && !AdJ.estOccupe(d_temp))
+            d_temp.sety(d_temp.y()+1);
+            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
             {
                 d_pos = d_temp;
                 break;
             }
         case 3:
-            d_temp.x++;
-            d_temp.y++;
-            if(AdJ.estDansTableau(d_temp) && !AdJ.estOccupe(d_temp))
+            d_temp.setx(d_temp.x()+1);
+            d_temp.sety(d_temp.y()+1);
+            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
             {
                 d_pos = d_temp;
                 break;
             }
         case 4:
-            d_temp.x--;
-            if(AdJ.estDansTableau(d_temp) && !AdJ.estOccupe(d_temp))
+            d_temp.setx(d_temp.x()-1);
+            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
             {
                 d_pos = d_temp;
                 break;
             }
         case 6:
-            d_temp.x++;
-            if(AdJ.estDansTableau(d_temp) && !AdJ.estOccupe(d_temp))
+            d_temp.setx(d_temp.x()+1);
+            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
             {
                 d_pos = d_temp;
                 break;
             }
         case 7:
-            d_temp.x--;
-            d_temp.y--;
-            if(AdJ.estDansTableau(d_temp) && !AdJ.estOccupe(d_temp))
+            d_temp.setx(d_temp.x()-1);
+            d_temp.sety(d_temp.y()-1);
+            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
             {
                 d_pos = d_temp;
                 break;
             }
         case 8:
-            d_temp.y--;
-            if(AdJ.estDansTableau(d_temp) && !AdJ.estOccupe(d_temp))
+            d_temp.sety(d_temp.y()-1);
+            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
             {
                 d_pos = d_temp;
                 break;
             }
         case 9:
-            d_temp.x++;
-            d_temp.y--;
-            if(AdJ.estDansTableau(d_temp) && !AdJ.estOccupe(d_temp))
+            d_temp.setx(d_temp.x()+1);
+            d_temp.sety(d_temp.y()-1);
+            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
             {
                 d_pos = d_temp;
                 break;
@@ -105,38 +105,38 @@ void joueurNormal::deplacement( AireDeJeu& AdJ,int valeur)
     d_lifetime += 1;
 }
 
-joueurExpert::joueurExpert(const Point& pos) : joueur{pos}
+joueurExpert::joueurExpert(const point& pos) : joueur{pos}
 {}
 
 void joueurExpert::deplacement( AireDeJeu& AdJ,int valeur)
 {
-    Point d_temp = d_pos;
+    point d_temp = d_pos;
     switch(valeur)
     {
         case 2:
-            d_temp.y++;
-            if(AdJ.estDansTableau(d_temp) && !AdJ.estOccupe(d_temp))
+            d_temp.sety(d_temp.y()+1);
+            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
             {
                 d_pos = d_temp;
                 break;
             }
         case 4:
-            d_temp.x--;
-            if(AdJ.estDansTableau(d_temp) && !AdJ.estOccupe(d_temp))
+            d_temp.setx(d_temp.x()-1);
+            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
             {
                 d_pos = d_temp;
                 break;
             }
         case 6:
-            d_temp.x++;
-            if(AdJ.estDansTableau(d_temp) && !AdJ.estOccupe(d_temp))
+            d_temp.setx(d_temp.x()+1);
+            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
             {
                 d_pos = d_temp;
                 break;
             }
         case 8:
-            d_temp.y--;
-            if(AdJ.estDansTableau(d_temp) && !AdJ.estOccupe(d_temp))
+            d_temp.sety(d_temp.y()-1);
+            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
             {
                 d_pos = d_temp;
                 break;
