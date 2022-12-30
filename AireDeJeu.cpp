@@ -10,7 +10,7 @@ AireDeJeu::AireDeJeu(int largeur, int hauteur): d_Tab{}
     d_Tab.resize(hauteur);
     for(int i=0;i<d_Tab.size();i++)
     {
-        
+
         d_Tab[i].resize(largeur);
         for(int j =0; j<d_Tab[i].size();j++)
         {
@@ -111,7 +111,7 @@ bool AireDeJeu::import(const std::string& fichier)
                     {
                         ist>>valeur;
                         d_Tab[i][j] = valeur;
-                    }  
+                    }
                 while(chaine != "END")
                     ist>>chaine;
                 if(ist)
@@ -141,7 +141,7 @@ bool AireDeJeu::import(const std::string& fichier)
     }
 }
 
-bool AireDeJeu::export(const std::string& fichier)
+bool AireDeJeu::exporter(const std::string& fichier)
 {
     std::ofstream ost(fichier);
     if(ost)
@@ -152,7 +152,7 @@ bool AireDeJeu::export(const std::string& fichier)
             for(int j=0;j<d_Tab[i].size();++j)
                 ost<<d_Tab[i][j]<<" ";
             ost<<'\n';
-        }            
+        }
         ost<<"END";
         return true;
     }
