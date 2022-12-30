@@ -41,11 +41,13 @@ TEST_CASE("test tableau de fauve")
     point pos1{5,4};
     fauves.push_back(std::make_unique<lion>(pos1));
 
+
     point pos2{4,4};
     fauves.push_back(std::make_unique<lion>(pos2));
 
     point pos3{4,3};
     fauves.push_back(std::make_unique<lion>(pos3));
+
 
     std::vector<std::unique_ptr<piegeAPic>> pieges;
     point posp{5,4};
