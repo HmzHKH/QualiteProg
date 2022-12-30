@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 
-bool gameOver = true;
+bool gameOver = true; // Mettre false pour que ca fonctionne
 bool menu = true;
 
 
@@ -26,86 +26,95 @@ int SaisieDeplacement()
 
 void jouer()
 {
-    int val;
-    std::vector<std::vector<int>> x;
-    x.resize(10);
-    for(int i=0;i<x.size();i++)
+
+    //Init Aire de jeu
+    AireDeJeu e{10,10};
+    int valeurAdJ=0;
+    while(valeurAdJ<1 || valeurAdJ>3)
     {
-        x[i].resize(10);
-        for(int j =0; j<x[i].size();j++)
+        std::cout<<"Saisissez ce que vous voulez faire:\n1. Aire de jeu aléatoire\n2. Aire de jeu importée\n3. Revenir au menu\n";
+        std::cin>>valeurAdJ; 
+    }
+    switch(valeurAdJ)
+    {
+        case 1: /*aleatoireAdJ(e); On mettra le nombre de fauves, de pieges etc en parametres*/ break;
+        case 2: e.import("import.txt"); break;
+        case 3: mainMenu();
+    }
+
+    //Init joueur
+    bool estExpert=false;
+    std::cout<<"Joueur Expert ? True/False\n";
+    std::cin>>estExpert;
+    if(estExpert)
+        joueurExpert j{e.posJoueur()};
+    else
+        joueurNormal j{e.posJoueur()};
+
+    //Init tab fauves
+    std::vector<std::unique_ptr<fauve>> fauves;
+    for(int i = 0; i < 10; i++)
+    {
+        for(int j = 0; j < 10; j++)
         {
-            x[i][j]=0;
+            if(e.estOccupeType(2, point{i,j}))
+                fauves.push_back(std::make_unique<lion>(point{i,j}));
+
+            else if(e.estOccupeType(3, point{i,j}))
+                fauves.push_back(std::make_unique<tigre>(point{i,j}));
         }
     }
-    Point pn {8,5};
 
-    AireDeJeu e{x};
-    joueurNormal j{pn};
-
-
-    int k=0;
-
-    std::vector<std::unique_ptr<fauve>> fauves;
-    fauves.push_back(std::make_unique<lion>(pn));
-    fauves.push_back(std::make_unique<tigre>(pn));
-    std::vector<piegeAPic> pieges;
-    Point pi {5,5};
-    piegeAPic pap{pi,4};
-    pieges.push_back(pap);
-    //initAireDeJeu(AdJ);
-    while (!gameOver && fauves[k]!=nullptr)
+    //Init tab pieges
+    std::vector<std::unique_ptr<piegeAPic>> pieges;
+    for(int i = 0; i < 10; i++)
     {
-        val=SaisieDeplacement();
+        for(int j = 0; j < 10; j++)
+        {
+            if(e.estOccupeType(4, point{i,j}))
+                pieges.push_back(std::make_unique<piegeAPic>(point{i,j},4));
+        }
+    }
+    
+    //boucle de jeu tour par tour
+    while (!gameOver || !fauves.empty()) 
+    {
+        e.affiche();
+        int val = SaisieDeplacement();
         j.deplacement(e,val);
         for(const auto& d :fauves)
         {
             d->deplacement(e,j,fauves,pieges);// on deplace les fauves
         }
-        k++;
-    }
 
-}
-
-
-
-
-void afficheAiredj(const std::vector<std::vector<int>>& ADJ)//affichage du tableau et conversion en symboles
-{
-    for(int i=0; i<ADJ.size();i++)
-    {
-        for(int j=0;j<ADJ[0].size();j++)
+        for(int i=0;i<pieges.size();++i) //Supprime les pieges inactifs
         {
-            if(ADJ[i][j]==0)
-                std::cout<<'|'<<" "<<'|';
-            else if(ADJ[i][j]==1)
-                std::cout<<'|'<<'J'<<'|';
-            else if(ADJ[i][j]==2)
-                std::cout<<'|'<<'L'<<'|';
-            else if(ADJ[i][j]==3)
-                std::cout<<'|'<<'T'<<'|';
-            else if(ADJ[i][j]==4)
-                std::cout<<'|'<<'P'<<'|';
+            if(!pieges[i]->estActif())
+            {
+                std::swap(pieges[i],pieges[pieges.size()-1]);
+                pieges.pop_back();
+            }
         }
-        std::cout<<std::endl;
     }
+
 }
 
-
-
-
-
-
-
-
-int main(){
-while (menu)
+void mainMenu()
 {
-    int valeur;
-    std::cout<<"Saisissez ce que vous voulez faire: ";
-    std::cin>>valeur;
-    switch(valeur)
+    while (menu)
     {
-        case 1 : jouer(); break;
+        int valeur;
+        std::cout<<"Saisissez ce que vous voulez faire:\n1. Jouer\n9. Quitter\n";
+        std::cin>>valeur;
+        switch(valeur)
+        {
+            case 1 : jouer(); break;
+            case 9 : break;
+        }
     }
 }
+int main()
+{
+    mainMenu();
+
 }
