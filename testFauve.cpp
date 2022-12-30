@@ -40,18 +40,25 @@ TEST_CASE("test tableau de fauve")
     std::vector<std::unique_ptr<fauve>>fauves;
     point pos1{5,4};
     fauves.push_back(std::make_unique<lion>(pos1));
+
+
     point pos2{4,4};
     fauves.push_back(std::make_unique<lion>(pos2));
+
     point pos3{4,3};
     fauves.push_back(std::make_unique<lion>(pos3));
+
+
     std::vector<std::unique_ptr<piegeAPic>> pieges;
     point posp{5,4};
     int t = 3;
     pieges.push_back(std::make_unique<piegeAPic>(posp,t));
+
     SUBCASE("test si on tue un fauve")
     {
         int taille1 = fauves.size();
         killFauve(pos2,fauves);
+
         int taille2 = fauves.size();
         REQUIRE_LT(taille2,taille1);  //test si taille2 < taille1 et donc qu'on a tuer un fauve
     }
