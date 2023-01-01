@@ -23,9 +23,13 @@ public:
     bool estOccupeType(int e, const point& p) const; //renvoie si un type  d'entite occupe la position p du  tableau
 
     point posJoueur() const;// renvoie la position du joueur au moment donnée
-    void affiche() const;
+
     bool import(const std::string &fichier);
     bool exporter(const std::string &fichier);
+
+
+    int tailleL() const;
+    int tailleC() const;
 private:
     std::vector<std::vector<int>> d_Tab;
 };

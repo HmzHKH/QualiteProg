@@ -3,9 +3,10 @@
 #include "joueur.h"
 #include "piege.h"
 #include "AireDeJeu.h"
+#include "Afficheur.h"
 #include <iostream>
 #include <vector>
-
+/*
 bool gameOver = true; // Mettre false pour que ca fonctionne
 bool menu = true;
 
@@ -22,6 +23,22 @@ int SaisieDeplacement()
 }
 
 
+void mainMenu()
+{
+    while (menu)
+    {
+        int valeur;
+        std::cout<<"Saisissez ce que vous voulez faire:\n1. Jouer\n9. Quitter\n";
+        std::cin>>valeur;
+        switch(valeur)
+        {
+            case 1 : jouer(); break;
+            case 9 : break;
+        }
+    }
+}
+
+
 //il faut initialiser les differents tableaux de pointeurs fauve, piege et joueur?
 
 void jouer()
@@ -32,12 +49,12 @@ void jouer()
     int valeurAdJ=0;
     while(valeurAdJ<1 || valeurAdJ>3)
     {
-        std::cout<<"Saisissez ce que vous voulez faire:\n1. Aire de jeu alÃ©atoire\n2. Aire de jeu importÃ©e\n3. Revenir au menu\n";
-        std::cin>>valeurAdJ; 
+        std::cout<<"Saisissez ce que vous voulez faire:\n1. Aire de jeu aléatoire\n2. Aire de jeu importée\n3. Revenir au menu\n";
+        std::cin>>valeurAdJ;
     }
     switch(valeurAdJ)
     {
-        case 1: /*aleatoireAdJ(e); On mettra le nombre de fauves, de pieges etc en parametres*/ break;
+        case 1:  break;  //aleatoireAdJ(e); On mettra le nombre de fauves, de pieges etc en parametres
         case 2: e.import("import.txt"); break;
         case 3: mainMenu();
     }
@@ -55,13 +72,13 @@ void jouer()
     std::vector<std::unique_ptr<fauve>> fauves;
     for(int i = 0; i < 10; i++)
     {
-        for(int j = 0; j < 10; j++)
+        for(int k = 0; k < 10; k++)
         {
-            if(e.estOccupeType(2, point{i,j}))
-                fauves.push_back(std::make_unique<lion>(point{i,j}));
+            if(e.estOccupeType(2, point{i,k}))
+                fauves.push_back(std::make_unique<lion>(point{i,k}));
 
-            else if(e.estOccupeType(3, point{i,j}))
-                fauves.push_back(std::make_unique<tigre>(point{i,j}));
+            else if(e.estOccupeType(3, point{i,k}))
+                fauves.push_back(std::make_unique<tigre>(point{i,k}));
         }
     }
 
@@ -69,15 +86,15 @@ void jouer()
     std::vector<std::unique_ptr<piegeAPic>> pieges;
     for(int i = 0; i < 10; i++)
     {
-        for(int j = 0; j < 10; j++)
+        for(int k = 0; k < 10; k++)
         {
-            if(e.estOccupeType(4, point{i,j}))
-                pieges.push_back(std::make_unique<piegeAPic>(point{i,j},4));
+            if(e.estOccupeType(4, point{i,k}))
+                pieges.push_back(std::make_unique<piegeAPic>(point{i,k},4));
         }
     }
-    
+
     //boucle de jeu tour par tour
-    while (!gameOver || !fauves.empty()) 
+    while (!gameOver || !fauves.empty())
     {
         e.affiche();
         int val = SaisieDeplacement();
@@ -98,23 +115,15 @@ void jouer()
     }
 
 }
+*/
 
-void mainMenu()
-{
-    while (menu)
-    {
-        int valeur;
-        std::cout<<"Saisissez ce que vous voulez faire:\n1. Jouer\n9. Quitter\n";
-        std::cin>>valeur;
-        switch(valeur)
-        {
-            case 1 : jouer(); break;
-            case 9 : break;
-        }
-    }
-}
 int main()
 {
-    mainMenu();
+    //mainMenu();
+    afficheConsole a;
+    AireDeJeu Adj{5,5};
+    Adj.import("test.txt");
+    a.afficheAdj(Adj);
+    a.afficheJ(Adj);
 
 }
