@@ -50,26 +50,6 @@ point AireDeJeu::posJoueur() const
     }
 }
 
-void AireDeJeu::affiche() const
-{
-    for(int i=0; i<d_Tab.size();i++)
-    {
-        for(int j=0;j<d_Tab[0].size();j++)
-        {
-            if(d_Tab[i][j]==0)
-                std::cout<<'|'<<" "<<'|';
-            else if(d_Tab[i][j]==1)
-                std::cout<<'|'<<'J'<<'|';
-            else if(d_Tab[i][j]==2)
-                std::cout<<'|'<<'L'<<'|';
-            else if(d_Tab[i][j]==3)
-                std::cout<<'|'<<'T'<<'|';
-            else if(d_Tab[i][j]==4)
-                std::cout<<'|'<<'P'<<'|';
-        }
-        std::cout<<std::endl;
-    }
-}
 
 // MES AJOUTS:
 /* Structure du fichier:
@@ -162,3 +142,27 @@ bool AireDeJeu::exporter(const std::string& fichier)
         return false;
     }
 }
+
+
+
+
+int AireDeJeu::tailleL() const
+{
+   return d_Tab.size();
+}
+
+int AireDeJeu::tailleC() const
+{
+    d_Tab[0].size();
+}
+
+
+
+
+
+
+
+
+
+
+
