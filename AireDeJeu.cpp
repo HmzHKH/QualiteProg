@@ -83,11 +83,11 @@ bool AireDeJeu::import(const std::string& fichier)
             if(ist)
             {
                 ist>>largeur>>hauteur;
-                d_Tab.resize(hauteur);
+                d_Tab.resize(largeur);
                 for(int i=0;i<d_Tab.size();++i)
-                    d_Tab[i].resize(largeur);
+                    d_Tab[i].resize(hauteur);
                 for(int i=0;i<d_Tab.size();++i)
-                    for(int j=0;i<d_Tab[i].size();++j)
+                    for(int j=0;j<d_Tab[i].size();++j)
                     {
                         ist>>valeur;
                         d_Tab[i][j] = valeur;

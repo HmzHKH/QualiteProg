@@ -10,6 +10,7 @@ class afficheur{
 public:
     virtual ~afficheur() = default;
     virtual void afficheAdj(const AireDeJeu &Adj) const = 0;
+    virtual void afficheJ(const AireDeJeu &Adj) const = 0;
 };
 
 
@@ -17,6 +18,7 @@ class afficheConsole: public afficheur{
 
 public:
     virtual void afficheAdj(const AireDeJeu &Adj) const override;
+    virtual void afficheJ(const AireDeJeu &Adj) const override;
 
 };
 

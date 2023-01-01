@@ -124,5 +124,6 @@ int main()
     AireDeJeu Adj{5,5};
     Adj.import("test.txt");
     a.afficheAdj(Adj);
+    a.afficheJ(Adj);
 
 }
