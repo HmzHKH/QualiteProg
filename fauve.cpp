@@ -67,7 +67,7 @@ void lion::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<fa
     else
     {
         if(d_pos.y()<j.position().y())//si le lion est en haut du joueur il avancera vers le haut
-            temp.sety(temp.y()+1); 
+            temp.sety(temp.y()+1);
         else
             temp.sety(temp.y()-1);    //si le lion est en bas du joueur il avancera vers le haut
     }
@@ -75,21 +75,31 @@ void lion::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<fa
     if(AdJ.estOccupeType(3,temp)) //si le lion avance sur un tigre il le tue et prend sa place
     {
         killFauve(temp,fauves);
+        AdJ.setValue(d_pos,0);
         d_pos=temp;
+        AdJ.setValue(d_pos,2);
     }
 
-    else if(AdJ.estOccupeType(0,temp)) // si le lion avance sur une position vide il prend cette place
+    else if(AdJ.estOccupeType(0,temp))// si le lion avance sur une position vide il prend cette place
+    {
+        AdJ.setValue(d_pos,0);
         d_pos=temp;
+        AdJ.setValue(d_pos,2);
+    }
+
 
     else if(AdJ.estOccupeType(4,temp)) // si le lion  avance vers un piege il se deplace et meurt si le piege n'est pas vide(pour le moment il y a pas d'arbres)
     {
+        AdJ.setValue(d_pos,0);
         d_pos=temp;
-        killPiegeAPic(d_pos,pieges,fauves);//on empile et on tue le tigre s'il est sur un piege actif
+        killPiegeAPic(d_pos,pieges,fauves);//on empile et on tue le lion s'il est sur un piege actif
     }
 
     else if(AdJ.estOccupeType(1,temp))
     {
+        AdJ.setValue(d_pos,0);
         d_pos=temp;
+        AdJ.setValue(d_pos,2);
         j.setDeath();
     }
 }
@@ -109,9 +119,9 @@ void tigre::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<f
     if(lx>ly)//on choisit la meilleure voie par la quelle avancer ou reculer
     {
         if(d_pos.x()<j.position().x())
-            temp.setx(temp.x()+1);//si le tigre est � gauche du joueur il avancera vers la droite
+            temp.setx(temp.x()+1);//si le tigre est a gauche du joueur il avancera vers la droite
         else
-            temp.setx(temp.x()-1);//si le tigre est � droite du joueur il avancera vers la gauche
+            temp.setx(temp.x()-1);//si le tigre est a droite du joueur il avancera vers la gauche
 
 
     }
@@ -141,21 +151,30 @@ void tigre::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<f
     if(AdJ.estOccupeType(2,temp)) //s il avance vers un lion il le tue
     {
         killFauve(temp,fauves);
+        AdJ.setValue(d_pos,0);
         d_pos=temp;
+        AdJ.setValue(d_pos,3);
     }
 
     else if(AdJ.estOccupeType(0,temp))//si cest vide il avance
+    {
+        AdJ.setValue(d_pos,0);
         d_pos=temp;
+        AdJ.setValue(d_pos,3);
+    }
 
     else if(AdJ.estOccupeType(4,temp))// si le tigre avance vers un piege il se deplace et meurt si le piege n'est pas vide(pour le moment il y a pas d'arbres)
     {
+        AdJ.setValue(d_pos,0);
         d_pos=temp;
         killPiegeAPic(d_pos,pieges,fauves);
     }
 
     else if(AdJ.estOccupeType(1,temp))// si le tigre avance vers le joueur et le tue
     {
+        AdJ.setValue(d_pos,0);
         d_pos=temp;
+        AdJ.setValue(d_pos,3);
         j.setDeath();
     }
 }

@@ -121,6 +121,37 @@ bool AireDeJeu::import(const std::string& fichier)
     }
 }
 
+void AireDeJeu::applyImport(std::vector<std::unique_ptr<joueur>> &joueurs,std::vector<std::unique_ptr<fauve>> &fauves, std::vector<std::unique_ptr<piegeAPic>> &pieges)
+{
+    //Choix joueur expert ou normal
+    bool estExpert=false;
+    std::cout<<"Joueur Expert ? True/False\n";
+    std::cin>>estExpert;
+    //Init tab fauves & pieges & joueurs
+
+    for(int i = 0; i < tailleL(); i++)
+    {
+        for(int j = 0; j < tailleC(); j++)
+        {
+            if(estOccupeType(1,point{i,j}))
+                {
+                    if(estExpert)
+                        joueurs.push_back(std::make_unique<joueurExpert>(point{i,j}));
+                    else
+                        joueurs.push_back(std::make_unique<joueurNormal>(point{i,j}));
+                }
+            else if(estOccupeType(2, point{i,j}))
+                fauves.push_back(std::make_unique<lion>(point{i,j}));
+
+            else if(estOccupeType(3, point{i,j}))
+                fauves.push_back(std::make_unique<tigre>(point{i,j}));
+
+            else if(estOccupeType(4, point{i,j}))
+                pieges.push_back(std::make_unique<piegeAPic>(point{i,j},4));
+        }
+    }
+
+}
 bool AireDeJeu::exporter(const std::string& fichier)
 {
     std::ofstream ost(fichier);
@@ -143,6 +174,12 @@ bool AireDeJeu::exporter(const std::string& fichier)
     }
 }
 
+
+
+void AireDeJeu::setValue(const point& p, int value)
+{
+    d_Tab[p.x()][p.y()]=value;
+}
 
 
 

@@ -3,11 +3,9 @@
 
 #include <vector>
 #include <string>
-#include "point.h"
 #include "joueur.h"
-
-
-
+#include "point.h"
+#include "fauve.h"
 // 0 dans le tableau = case vide
 // 1 dans le tableau = Joueur
 // 2 dans le tableau = Lion
@@ -21,13 +19,11 @@ public:
     bool estDansTableau(const point& p) const; //Renvoi si un point est dans le tableau
     bool estLibre(const point& p) const; //Renvoi si une case est libre (égale à 0)
     bool estOccupeType(int e, const point& p) const; //renvoie si un type  d'entite occupe la position p du  tableau
-
     point posJoueur() const;// renvoie la position du joueur au moment donnée
-
+    void setValue(const point& p, int value);
     bool import(const std::string &fichier);
+    void applyImport(std::vector<std::unique_ptr<joueur>> &joueurs,std::vector<std::unique_ptr<fauve>> &fauves, std::vector<std::unique_ptr<piegeAPic>> &pieges);
     bool exporter(const std::string &fichier);
-
-
     int tailleL() const;
     int tailleC() const;
 private:
@@ -37,3 +33,5 @@ private:
 #endif // AIREDEJEU_H
 
 
+
+void setValue(const point& p, int value);
