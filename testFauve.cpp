@@ -33,8 +33,8 @@ TEST_CASE("test sur la creation d'un tigre")
         REQUIRE_EQ(pos, position);    //test si la position est correcte
     }
 }
-//A corriger
-/*
+
+
 TEST_CASE("test tableau de fauve")
 {
     std::vector<std::unique_ptr<fauve>>fauves;
@@ -73,4 +73,66 @@ TEST_CASE("test tableau de fauve")
         REQUIRE_LT(nb2,nb1);      //test si la taille du piege diminue
     }
 }
+
+//a revoir
+/*
+
+TEST_CASE("test le deplacement d'un tigre")
+{
+    std::vector<std::unique_ptr<fauve>>fauves;
+    point pos1{2,2};
+    fauves.push_back(std::make_unique<tigre>(pos1));
+
+
+    std::vector<std::unique_ptr<piegeAPic>> pieges;
+    point posp{4,4};
+    int t = 3;
+    pieges.push_back(std::make_unique<piegeAPic>(posp,t));
+
+    AireDeJeu A{5,5};
+
+
+    SUBCASE("test si le tigre se deplace en haut à droite")
+    {
+        fauves[0]->deplacement();
+        point pos1= fauves[0]->position();
+        REQUIRE_EQ()
+    }
+    SUBCASE("test si le tigre se deplace en haut à gauche")
+    {
+        point position = t.position();
+        REQUIRE_EQ(pos, position);    //test si la position est correcte
+    }
+     SUBCASE("test si le tigre se deplace en haut")
+    {
+        point position = t.position();
+        REQUIRE_EQ(pos, position);    //test si la position est correcte
+    }
+    SUBCASE("test si le tigre se deplace en bas à droite")
+    {
+        point position = t.position();
+        REQUIRE_EQ(pos, position);    //test si la position est correcte
+    }
+    SUBCASE("test si le tigre se deplace en bas à gauche")
+    {
+        point position = t.position();
+        REQUIRE_EQ(pos, position);    //test si la position est correcte
+    }
+    SUBCASE("test si le tigre se deplace en bas ")
+    {
+        point position = t.position();
+        REQUIRE_EQ(pos, position);    //test si la position est correcte
+    }
+    SUBCASE("test si le tigre se deplace  à gauche")
+    {
+        point position = t.position();
+        REQUIRE_EQ(pos, position);    //test si la position est correcte
+    }
+    SUBCASE("test si le tigre se deplace à droite")
+    {
+        point position = t.position();
+        REQUIRE_EQ(pos, position);    //test si la position est correcte
+    }
+}
+
 */

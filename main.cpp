@@ -122,8 +122,18 @@ int main()
     //mainMenu();
     afficheConsole a;
     AireDeJeu Adj{5,5};
-    Adj.import("test.txt");
     a.afficheAdj(Adj);
-    a.afficheJ(Adj);
+    std::cout<<std::endl;
+
+    point p(4,4);
+    point p1(2,2);
+    Adj.setValue(p,1);
+    Adj.setValue(p1,1);
+    a.afficheAdj(Adj);
+
+    std::cout<<std::endl;
+    //Adj.import("test.txt");
+    //a.afficheAdj(Adj);
+    //a.afficheJ(Adj);
 
 }
