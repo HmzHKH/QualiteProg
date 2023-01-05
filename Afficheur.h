@@ -17,6 +17,7 @@ class afficheConsole: public afficheur{
 
 public:
     virtual void afficheAdj(const AireDeJeu &Adj) const override;
+    void afficheGameOver() const;
 };
 
 

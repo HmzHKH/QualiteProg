@@ -140,6 +140,7 @@ void jeu(AireDeJeu& adj, afficheConsole& a)
 
     }
 
+    a.afficheGameOver();
     std::cout<<"GameOver\nRetour au menu...\n";
 }
 void jouer()
