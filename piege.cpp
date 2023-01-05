@@ -18,7 +18,7 @@ int piegeAPic::taille() const
     return d_taille;
 }
 
-void piegeAPic::increaseTaille()
+void piegeAPic::increaseTaille(AireDeJeu& AdJ)
 {
     if(d_taille != 0)
     {
@@ -26,7 +26,8 @@ void piegeAPic::increaseTaille()
 
         if(d_taille == 0)
         {
-            d_actif = false;    //desactive le piege s'il est plein
+            d_actif = false;//desactive le piege s'il est plein
+            AdJ.setValue(d_pos,0);
         }
     }
 }

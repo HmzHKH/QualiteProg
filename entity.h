@@ -17,7 +17,6 @@ class Entity{
 public:
     virtual ~Entity() = default;
     virtual point position() const = 0;
-
 };
 
 class DynamicEntity : public Entity{

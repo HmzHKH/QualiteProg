@@ -21,11 +21,13 @@ AireDeJeu::AireDeJeu(int largeur, int hauteur): d_Tab{}
 
 bool AireDeJeu::estDansTableau(const point& p) const
 {
-    for(int i = 0; i < d_Tab.size(); i++)
+    int x = p.x();
+    int y = p.y();
+    if(x>=0 && y>=0 && x<d_Tab.size() && y<d_Tab[0].size())
     {
-        for(int j = 0; j < d_Tab[j].size(); j++)
-            return p.x() == i && p.y() == j;
+        return true;
     }
+
 }
 
 bool AireDeJeu::estLibre(const point& p) const
@@ -125,13 +127,13 @@ void AireDeJeu::applyImport(std::vector<std::unique_ptr<joueur>> &joueurs,std::v
 {
     //Choix joueur expert ou normal
     bool estExpert=false;
-    std::cout<<"Joueur Expert ? True/False\n";
+    std::cout<<"Joueur Expert ? 0.Non 1.Oui\n";
     std::cin>>estExpert;
     //Init tab fauves & pieges & joueurs
 
-    for(int i = 0; i < tailleL(); i++)
+    for(int i = 0; i < d_Tab.size(); i++)
     {
-        for(int j = 0; j < tailleC(); j++)
+        for(int j = 0; j < d_Tab[i].size(); j++)
         {
             if(estOccupeType(1,point{i,j}))
                 {
@@ -147,7 +149,7 @@ void AireDeJeu::applyImport(std::vector<std::unique_ptr<joueur>> &joueurs,std::v
                 fauves.push_back(std::make_unique<tigre>(point{i,j}));
 
             else if(estOccupeType(4, point{i,j}))
-                pieges.push_back(std::make_unique<piegeAPic>(point{i,j},4));
+                pieges.push_back(std::make_unique<piegeAPic>(point{i,j},2));
         }
     }
 
@@ -190,7 +192,7 @@ int AireDeJeu::tailleL() const
 
 int AireDeJeu::tailleC() const
 {
-    d_Tab[0].size();
+    return d_Tab[0].size();
 }
 
 

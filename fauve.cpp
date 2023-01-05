@@ -2,11 +2,17 @@
 #include "AireDeJeu.h"
 #include "joueur.h"
 #include <utility>
+#include <cmath>
 
 
 
 fauve::fauve(const point& pos) : d_pos{pos}, d_alive{true}
 {}
+
+void fauve::setDeath()
+{
+    d_alive = false;
+}
 
 point fauve::position() const
 {
@@ -24,14 +30,13 @@ void killFauve(const point& p,std::vector<std::unique_ptr<fauve>> &fauves)
     {
         if(fauves[i]->position()==p)
         {
-            std::swap(fauves[i],fauves[fauves.size()-1]);
-            fauves.pop_back();
+            fauves[i]->setDeath();
         }
     }
 }
 
 
-void killPiegeAPic(const point& p, std::vector<std::unique_ptr<piegeAPic>> &pieges, std::vector<std::unique_ptr<fauve>> &fauves)  // fonction qui s'occupe de verifier si dans la position p il y a un piege et si oui on tue le fauve dans cette pos et empile le piege
+void killPiegeAPic(const point& p, AireDeJeu& AdJ, std::vector<std::unique_ptr<piegeAPic>> &pieges, std::vector<std::unique_ptr<fauve>> &fauves)  // fonction qui s'occupe de verifier si dans la position p il y a un piege et si oui on tue le fauve dans cette pos et empile le piege
 {
     for(int i=0; i<pieges.size();i++)
     {
@@ -40,7 +45,7 @@ void killPiegeAPic(const point& p, std::vector<std::unique_ptr<piegeAPic>> &pieg
             if(pieges[i]->estActif())
             {
                 killFauve(p,fauves);
-                pieges[i]->increaseTaille();
+                pieges[i]->increaseTaille(AdJ);
             }
         }
     }
@@ -50,15 +55,15 @@ void killPiegeAPic(const point& p, std::vector<std::unique_ptr<piegeAPic>> &pieg
 lion::lion(const point& pos) : fauve{pos}
 {}
 //fauve se deplacant en h et v
-void lion::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<fauve>> &fauves, std::vector<std::unique_ptr<piegeAPic>> &pieges)
+void lion::deplacement(AireDeJeu& AdJ, std::vector<std::unique_ptr<joueur>> &joueurs,std::vector<std::unique_ptr<fauve>> &fauves, std::vector<std::unique_ptr<piegeAPic>> &pieges)
 {
-    int lx=unsigned(d_pos.x()-j.position().x());
-    int ly=unsigned(d_pos.y()-j.position().y());
+    int lx=abs(d_pos.x()-joueurs[0]->position().x());
+    int ly=abs(d_pos.y()-joueurs[0]->position().y());
     point temp=d_pos;
 
     if(lx>ly) //on choisit la meilleure voie par la quelle avancer ou reculer
     {
-        if(d_pos.x()<j.position().x()) //si le lion est � gauche du joueur il avancera vers la droite
+        if(d_pos.x()<joueurs[0]->position().x()) //si le lion est � gauche du joueur il avancera vers la droite
             temp.setx(temp.x()+1);
         else
             temp.setx(temp.x()-1);         //si le lion est � droite du joueur il avancera vers la gauche
@@ -66,7 +71,7 @@ void lion::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<fa
 
     else
     {
-        if(d_pos.y()<j.position().y())//si le lion est en haut du joueur il avancera vers le haut
+        if(d_pos.y()<joueurs[0]->position().y())//si le lion est en haut du joueur il avancera vers le haut
             temp.sety(temp.y()+1);
         else
             temp.sety(temp.y()-1);    //si le lion est en bas du joueur il avancera vers le haut
@@ -92,7 +97,7 @@ void lion::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<fa
     {
         AdJ.setValue(d_pos,0);
         d_pos=temp;
-        killPiegeAPic(d_pos,pieges,fauves);//on empile et on tue le lion s'il est sur un piege actif
+        killPiegeAPic(d_pos,AdJ,pieges,fauves);//on empile et on tue le lion s'il est sur un piege actif
     }
 
     else if(AdJ.estOccupeType(1,temp))
@@ -100,7 +105,7 @@ void lion::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<fa
         AdJ.setValue(d_pos,0);
         d_pos=temp;
         AdJ.setValue(d_pos,2);
-        j.setDeath();
+        joueurs[0]->setDeath();
     }
 }
 
@@ -110,15 +115,15 @@ tigre::tigre(const point& pos) : fauve{pos}
 
 
 //diagonales
-void tigre::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<fauve>> &fauves, std::vector<std::unique_ptr<piegeAPic>> &pieges)
+void tigre::deplacement(AireDeJeu& AdJ, std::vector<std::unique_ptr<joueur>> &joueurs, std::vector<std::unique_ptr<fauve>> &fauves, std::vector<std::unique_ptr<piegeAPic>> &pieges)
 {
-    int lx=unsigned(d_pos.x()-j.position().x());
-    int ly=unsigned(d_pos.y()-j.position().y());
+    int lx=abs(d_pos.x()-joueurs[0]->position().x());
+    int ly=abs(d_pos.y()-joueurs[0]->position().y());
     point temp=d_pos;
-
     if(lx>ly)//on choisit la meilleure voie par la quelle avancer ou reculer
     {
-        if(d_pos.x()<j.position().x())
+
+        if(d_pos.x()<joueurs[0]->position().x())
             temp.setx(temp.x()+1);//si le tigre est a gauche du joueur il avancera vers la droite
         else
             temp.setx(temp.x()-1);//si le tigre est a droite du joueur il avancera vers la gauche
@@ -128,7 +133,7 @@ void tigre::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<f
 
     else if(lx<ly)
     {
-        if(d_pos.y()<j.position().y())
+        if(d_pos.y()<joueurs[0]->position().y())
             temp.sety(temp.y()+1); //si le tigre est en bas du joueur il avancera vers le haut
         else
             temp.sety(temp.y()-1); //si le tigre est en haut du joueur il avancera vers le bas
@@ -136,12 +141,12 @@ void tigre::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<f
 
     else//deplace le tigre en diagonale
     {
-        if(d_pos.y()<j.position().y())
+        if(d_pos.y()<joueurs[0]->position().y())
             temp.sety(temp.y()+1);
         else
             temp.sety(temp.y()-1);
 
-        if(d_pos.x()<j.position().x())
+        if(d_pos.x()<joueurs[0]->position().x())
             temp.setx(temp.x()+1);
         else
             temp.setx(temp.x()-1);
@@ -167,7 +172,7 @@ void tigre::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<f
     {
         AdJ.setValue(d_pos,0);
         d_pos=temp;
-        killPiegeAPic(d_pos,pieges,fauves);
+        killPiegeAPic(d_pos,AdJ,pieges,fauves);//on empile et on tue le lion s'il est sur un piege actif
     }
 
     else if(AdJ.estOccupeType(1,temp))// si le tigre avance vers le joueur et le tue
@@ -175,6 +180,6 @@ void tigre::deplacement( AireDeJeu& AdJ, joueur &j,std::vector<std::unique_ptr<f
         AdJ.setValue(d_pos,0);
         d_pos=temp;
         AdJ.setValue(d_pos,3);
-        j.setDeath();
+        joueurs[0]->setDeath();
     }
 }
