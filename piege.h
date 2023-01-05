@@ -16,7 +16,7 @@ public:
     point position() const override;
     bool estActif() const override;
     int taille() const;
-    void increaseTaille();
+    void increaseTaille(AireDeJeu& AdJ);
 private:
     point d_pos;
     bool d_actif;

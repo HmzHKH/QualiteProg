@@ -1,9 +1,11 @@
 #include "doctest.h"
 #include "piege.h"
+#include "AireDeJeu.h"
 
 
 TEST_CASE("Le piege � pic fonctionne")
 {
+    AireDeJeu a{6,6};
     point pos{5,4};
     int t = 3;
     piegeAPic p{pos,t};
@@ -26,7 +28,7 @@ TEST_CASE("Le piege � pic fonctionne")
     {
         for( int i = p.taille()-1 ; i >= 0 ; --i )
         {
-            p.increaseTaille();
+            p.increaseTaille(a);
         }
         bool actif = p.estActif();
         int taille = p.taille();

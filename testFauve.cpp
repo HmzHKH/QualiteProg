@@ -1,6 +1,7 @@
 #include "doctest.h"
 #include "fauve.h"
 #include "piege.h"
+#include "AireDeJeu.h"
 
 TEST_CASE("test sur la creation d'un lion")
 {
@@ -56,33 +57,47 @@ TEST_CASE("test tableau de fauve")
 
     SUBCASE("test si on tue un fauve")
     {
-        int taille1 = fauves.size();
-        killFauve(pos2,fauves);
+        int nbVivant=0;
+        for(int i=0;i<fauves.size();++i)
+            if(fauves[i]->estVivant())
+                nbVivant++;
 
-        int taille2 = fauves.size();
-        REQUIRE_LT(taille2,taille1);  //test si taille2 < taille1 et donc qu'on a tuer un fauve
+        killFauve(pos3,fauves);
+
+        int nbVivant1=0;
+        for(int i=0;i<fauves.size();++i)
+            if(fauves[i]->estVivant())
+                nbVivant1++;
+
+        REQUIRE_GT(nbVivant,nbVivant1);  //test si taille2 < taille1 et donc qu'on a tuer un fauve
     }
     SUBCASE("test si le piege tue un fauve et que sa taille diminue")
     {
-        int taille1 = fauves.size();
+        AireDeJeu a{6,6};
+        int nbVivant = 0;
+        for(int i=0;i<fauves.size();++i)
+            if(fauves[i]->estVivant())
+                nbVivant++;
         int nb1 = pieges[0]->taille();
-        killPiegeAPic(pos1,pieges,fauves);
-        int taille2 = fauves.size();
+        killPiegeAPic(pos1,a,pieges,fauves);
+        int nbVivant1=0;
+        for(int i=0;i<fauves.size();++i)
+            if(fauves[i]->estVivant())
+                nbVivant1++;
         int nb2 = pieges[0]->taille();
-        REQUIRE_LT(taille2,taille1);  //test si taille2 < taille1 et donc qu'on a tuer un fauve
+        REQUIRE_LT(nbVivant1,nbVivant);  //test si taille2 < taille1 et donc qu'on a tuer un fauve
         REQUIRE_LT(nb2,nb1);      //test si la taille du piege diminue
     }
 }
 
-//a revoir
-/*
 
 TEST_CASE("test le deplacement d'un tigre")
 {
     std::vector<std::unique_ptr<fauve>>fauves;
     point pos1{2,2};
-    fauves.push_back(std::make_unique<tigre>(pos1));
 
+
+    std::vector<std::unique_ptr<joueur>> joueurs;
 
     std::vector<std::unique_ptr<piegeAPic>> pieges;
     point posp{4,4};
@@ -94,45 +109,132 @@ TEST_CASE("test le deplacement d'un tigre")
 
     SUBCASE("test si le tigre se deplace en haut à droite")
     {
-        fauves[0]->deplacement();
+        joueurs.push_back(std::make_unique<joueurNormal>(point{0,1}));
+        fauves.push_back(std::make_unique<tigre>(point{1,0}));
         point pos1= fauves[0]->position();
-        REQUIRE_EQ()
+        fauves[0]->deplacement(A,joueurs,fauves,pieges);
+        pos1.setx(pos1.x()-1);
+        pos1.sety(pos1.y()+1);
+        REQUIRE_EQ(pos1,fauves[0]->position());
     }
     SUBCASE("test si le tigre se deplace en haut à gauche")
     {
-        point position = t.position();
-        REQUIRE_EQ(pos, position);    //test si la position est correcte
+        joueurs.push_back(std::make_unique<joueurNormal>(point{0,0}));
+        fauves.push_back(std::make_unique<tigre>(point{1,1}));
+        point pos1= fauves[0]->position();
+        fauves[0]->deplacement(A,joueurs,fauves,pieges);
+        pos1.setx(pos1.x()-1);
+        pos1.sety(pos1.y()-1);
+        REQUIRE_EQ(pos1,fauves[0]->position());
     }
-     SUBCASE("test si le tigre se deplace en haut")
+    SUBCASE("test si le tigre se deplace en haut")
     {
-        point position = t.position();
-        REQUIRE_EQ(pos, position);    //test si la position est correcte
+        joueurs.push_back(std::make_unique<joueurNormal>(point{0,1}));
+        fauves.push_back(std::make_unique<tigre>(point{1,1}));
+        point pos1= fauves[0]->position();
+        fauves[0]->deplacement(A,joueurs,fauves,pieges);
+        pos1.setx(pos1.x()-1);
+        REQUIRE_EQ(pos1,fauves[0]->position());
     }
     SUBCASE("test si le tigre se deplace en bas à droite")
     {
-        point position = t.position();
-        REQUIRE_EQ(pos, position);    //test si la position est correcte
+        joueurs.push_back(std::make_unique<joueurNormal>(point{1,1}));
+        fauves.push_back(std::make_unique<tigre>(point{0,0}));
+        point pos1= fauves[0]->position();
+        fauves[0]->deplacement(A,joueurs,fauves,pieges);
+        pos1.setx(pos1.x()+1);
+        pos1.sety(pos1.y()+1);
+        REQUIRE_EQ(pos1,fauves[0]->position());
     }
     SUBCASE("test si le tigre se deplace en bas à gauche")
     {
-        point position = t.position();
-        REQUIRE_EQ(pos, position);    //test si la position est correcte
+        joueurs.push_back(std::make_unique<joueurNormal>(point{1,0}));
+        fauves.push_back(std::make_unique<tigre>(point{0,1}));
+        point pos1= fauves[0]->position();
+        fauves[0]->deplacement(A,joueurs,fauves,pieges);
+        pos1.setx(pos1.x()+1);
+        pos1.sety(pos1.y()-1);
+        REQUIRE_EQ(pos1,fauves[0]->position());
     }
     SUBCASE("test si le tigre se deplace en bas ")
     {
-        point position = t.position();
-        REQUIRE_EQ(pos, position);    //test si la position est correcte
+        joueurs.push_back(std::make_unique<joueurNormal>(point{1,1}));
+        fauves.push_back(std::make_unique<tigre>(point{0,1}));
+        point pos1= fauves[0]->position();
+        fauves[0]->deplacement(A,joueurs,fauves,pieges);
+        pos1.setx(pos1.x()+1);;
+        REQUIRE_EQ(pos1,fauves[0]->position());
     }
     SUBCASE("test si le tigre se deplace  à gauche")
     {
-        point position = t.position();
-        REQUIRE_EQ(pos, position);    //test si la position est correcte
+        joueurs.push_back(std::make_unique<joueurNormal>(point{0,0}));
+        fauves.push_back(std::make_unique<tigre>(point{0,1}));
+        point pos1= fauves[0]->position();
+        fauves[0]->deplacement(A,joueurs,fauves,pieges);
+        pos1.sety(pos1.y()-1);
+        REQUIRE_EQ(pos1,fauves[0]->position());
     }
     SUBCASE("test si le tigre se deplace à droite")
     {
-        point position = t.position();
-        REQUIRE_EQ(pos, position);    //test si la position est correcte
+        joueurs.push_back(std::make_unique<joueurNormal>(point{0,1}));
+        fauves.push_back(std::make_unique<tigre>(point{0,0}));
+        point pos1= fauves[0]->position();
+        fauves[0]->deplacement(A,joueurs,fauves,pieges);
+        pos1.sety(pos1.y()+1);
+        REQUIRE_EQ(pos1,fauves[0]->position());
     }
 }
 
-*/
+TEST_CASE("test le deplacement d'un lion")
+{
+    std::vector<std::unique_ptr<fauve>>fauves;
+    point pos1{2,2};
+
+
+    std::vector<std::unique_ptr<joueur>> joueurs;
+
+    std::vector<std::unique_ptr<piegeAPic>> pieges;
+    point posp{4,4};
+    int t = 3;
+    pieges.push_back(std::make_unique<piegeAPic>(posp,t));
+
+    AireDeJeu A{5,5};
+
+    SUBCASE("test si le lion se deplace en haut")
+    {
+        joueurs.push_back(std::make_unique<joueurNormal>(point{0,1}));
+        fauves.push_back(std::make_unique<lion>(point{1,1}));
+        point pos1= fauves[0]->position();
+        fauves[0]->deplacement(A,joueurs,fauves,pieges);
+        pos1.setx(pos1.x()-1);
+        REQUIRE_EQ(pos1,fauves[0]->position());
+    }
+    SUBCASE("test si le lion se deplace en bas ")
+    {
+        joueurs.push_back(std::make_unique<joueurNormal>(point{1,1}));
+        fauves.push_back(std::make_unique<lion>(point{0,1}));
+        point pos1= fauves[0]->position();
+        fauves[0]->deplacement(A,joueurs,fauves,pieges);
+        pos1.setx(pos1.x()+1);;
+        REQUIRE_EQ(pos1,fauves[0]->position());
+    }
+    SUBCASE("test si le lion se deplace  à gauche")
+    {
+        joueurs.push_back(std::make_unique<joueurNormal>(point{0,0}));
+        fauves.push_back(std::make_unique<lion>(point{0,1}));
+        point pos1= fauves[0]->position();
+        fauves[0]->deplacement(A,joueurs,fauves,pieges);
+        pos1.sety(pos1.y()-1);
+        REQUIRE_EQ(pos1,fauves[0]->position());
+    }
+    SUBCASE("test si le lion se deplace à droite")
+    {
+        joueurs.push_back(std::make_unique<joueurNormal>(point{0,1}));
+        fauves.push_back(std::make_unique<lion>(point{0,0}));
+        point pos1= fauves[0]->position();
+        fauves[0]->deplacement(A,joueurs,fauves,pieges);
+        pos1.sety(pos1.y()+1);
+        REQUIRE_EQ(pos1,fauves[0]->position());
+    }
+}
+

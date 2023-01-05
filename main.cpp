@@ -1,4 +1,3 @@
-
 #include "fauve.h"
 #include "joueur.h"
 #include "piege.h"
@@ -6,104 +5,126 @@
 #include "Afficheur.h"
 #include <iostream>
 #include <vector>
-/*
-bool gameOver = true; // Mettre false pour que ca fonctionne
+
+bool gameOver;
 bool menu = true;
-
-
-int SaisieDeplacement()
+void ajoutEdit(AireDeJeu& e, afficheConsole& a)
 {
-    int valeur = 0;
-    while(valeur<1 || valeur>9)
+    bool ajouter=true;
+    while(ajouter)
     {
-        std::cout<<"envoyez la valeur de deplacement: ";
-        std::cin>>valeur;
-    }
-    return valeur;
-}
-
-
-void mainMenu()
-{
-    while (menu)
-    {
-        int valeur;
-        std::cout<<"Saisissez ce que vous voulez faire:\n1. Jouer\n9. Quitter\n";
-        std::cin>>valeur;
-        switch(valeur)
+        std::string nom;
+        std::cout<<"Ecrire ce que vous voulez ajouter: joueur,lion,tigre,piege a pic\n";
+        std::cin>>nom;
+        if(nom == "joueur")
         {
-            case 1 : jouer(); break;
-            case 9 : break;
+            int x,y;
+            std::cout<<"Donnez sa position: y x\n";
+            std::cin>>y>>x;
+            e.setValue(point{x,y},1);
         }
+        else if(nom == "lion")
+        {
+            int x,y;
+            std::cout<<"Donnez sa position: y puis x\n";
+            std::cin>>y>>x;
+            e.setValue(point{x,y},2);
+        }
+        else if(nom == "tigre")
+        {
+            int x,y;
+            std::cout<<"Donnez sa position: y puis x\n";
+            std::cin>>y>>x;
+            e.setValue(point{x,y},3);
+        }
+        else if(nom == "piege")
+        {
+            int x,y;
+            std::cout<<"Donnez sa position: y puis x\n";
+            std::cin>>y>>x;
+            e.setValue(point{x,y},4);
+        }
+        else std::cout<<"error";
+        a.afficheAdj(e);
+        std::cout<<"Voulez vous continuer d'ajouter des entites? 0.Non 1.Oui\n";
+        std::cin>>ajouter;
     }
 }
 
-
-//il faut initialiser les differents tableaux de pointeurs fauve, piege et joueur?
-
-void jouer()
+void creeAdJ()
 {
+    afficheConsole a;
+    int longueur,largeur;
+    std::cout<<"Donnez la taille de l'aire de jeu: Longueur Largeur\n";
+    std::cin>>longueur>>largeur;
+    AireDeJeu adj(longueur,largeur);
+    std::cout<<"0 dans le tableau = case vide\n1 dans le tableau = Joueur\n2 dans le tableau = Lion\n3 dans le tableau = Tigre\n4 dans le tableau = PiegeAPic\n";
+    a.afficheAdj(adj);
+    ajoutEdit(adj,a);
+    adj.exporter("export.txt");
+    std::cout<<"Fichier exporte avec succes dans export.txt\n";
+}
 
-    //Init Aire de jeu
-    AireDeJeu e{10,10};
-    int valeurAdJ=0;
-    while(valeurAdJ<1 || valeurAdJ>3)
+void editImport()
+{
+    afficheConsole a;
+    AireDeJeu adj{10,10};
+    adj.import("import.txt");
+    a.afficheAdj(adj);
+    ajoutEdit(adj,a);
+    adj.exporter("export.txt");
+    std::cout<<"Fichier exporte avec succes dans export.txt\n";
+
+}
+
+void exporte()
+{
+    int choix =0;
+    while(choix<1 || choix>3)
     {
-        std::cout<<"Saisissez ce que vous voulez faire:\n1. Aire de jeu aléatoire\n2. Aire de jeu importée\n3. Revenir au menu\n";
-        std::cin>>valeurAdJ;
+        std::cout<<"Saisissez ce que vous voulez faire:\n1. Creer une aire de jeu vierge\n2. Modifier l'aire de jeu importee \n3. Revenir au menu\n";
+        std::cin>>choix;
     }
-    switch(valeurAdJ)
+    switch(choix)
     {
-        case 1:  break;  //aleatoireAdJ(e); On mettra le nombre de fauves, de pieges etc en parametres
-        case 2: e.import("import.txt"); break;
-        case 3: mainMenu();
+        case 1: creeAdJ();break;  //aleatoireAdJ(e); Idee de type d'aire de jeu
+        case 2: editImport();break;
+        case 3: break;
     }
-
-    //Init joueur
-    bool estExpert=false;
-    std::cout<<"Joueur Expert ? True/False\n";
-    std::cin>>estExpert;
-    if(estExpert)
-        joueurExpert j{e.posJoueur()};
-    else
-        joueurNormal j{e.posJoueur()};
-
+}
+void jeu(AireDeJeu& adj, afficheConsole& a)
+{
+    //Init tab joueurs
+    std::vector<std::unique_ptr<joueur>> joueurs;
     //Init tab fauves
     std::vector<std::unique_ptr<fauve>> fauves;
-    for(int i = 0; i < 10; i++)
-    {
-        for(int k = 0; k < 10; k++)
-        {
-            if(e.estOccupeType(2, point{i,k}))
-                fauves.push_back(std::make_unique<lion>(point{i,k}));
-
-            else if(e.estOccupeType(3, point{i,k}))
-                fauves.push_back(std::make_unique<tigre>(point{i,k}));
-        }
-    }
-
     //Init tab pieges
     std::vector<std::unique_ptr<piegeAPic>> pieges;
-    for(int i = 0; i < 10; i++)
-    {
-        for(int k = 0; k < 10; k++)
-        {
-            if(e.estOccupeType(4, point{i,k}))
-                pieges.push_back(std::make_unique<piegeAPic>(point{i,k},4));
-        }
-    }
+    adj.applyImport(joueurs,fauves,pieges);
 
     //boucle de jeu tour par tour
-    while (!gameOver || !fauves.empty())
+    while (gameOver==false && fauves.empty()==false)
     {
-        e.affiche();
-        int val = SaisieDeplacement();
-        j.deplacement(e,val);
-        for(const auto& d :fauves)
+        a.afficheAdj(adj);
+        int valeur;
+        std::cout<<"envoyez la valeur de deplacement: ";
+        std::cin>>valeur;
+        for(int i=0;i<joueurs.size();++i)
         {
-            d->deplacement(e,j,fauves,pieges);// on deplace les fauves
+            joueurs[i]->deplacement(adj,valeur);
         }
-
+        for(int i=0;i<fauves.size();++i)
+        {
+            if(fauves[i]->estVivant())
+            {
+                fauves[i]->deplacement(adj,joueurs,fauves,pieges);// on deplace les fauves
+                if(joueurs[0]->estVivant()==false)
+                {
+                    gameOver=true;
+                    i=fauves.size();
+                }
+            }
+        }
         for(int i=0;i<pieges.size();++i) //Supprime les pieges inactifs
         {
             if(!pieges[i]->estActif())
@@ -112,28 +133,53 @@ void jouer()
                 pieges.pop_back();
             }
         }
+        for(int i=0;i<joueurs.size();++i)
+        {
+            std::cout<<"Score du joueur: "<<joueurs[i]->lifetime()<<'\n';
+        }
+
     }
 
+    std::cout<<"GameOver\nRetour au menu...\n";
 }
-*/
+void jouer()
+{
+    gameOver=false;
+    //Init afficheur
+    afficheConsole a;
+    //Init Aire de jeu
+    AireDeJeu adj{10,10};
+    int typeAdJ =0;
+    while(typeAdJ<1 || typeAdJ>3)
+    {
+        std::cout<<"Saisissez ce que vous voulez faire:\n1. Aire de jeu aleatoire(not working)\n2. Aire de jeu importee\n3. Revenir au menu\n";
+        std::cin>>typeAdJ;
+    }
+    switch(typeAdJ)
+    {
+        case 1: std::cout<<"N'existe pas, uniquement une idee pour etoffer le menu\n";break;  //aleatoireAdJ(e); Idee de type d'aire de jeu
+        case 2: adj.import("import.txt");jeu(adj,a); break;
+        case 3: break;
+    }
+}
+
+void mainMenu()
+{
+    while (menu)
+    {
+        int valeur;
+        std::cout<<"Saisissez ce que vous voulez faire:\n1. Jouer\n2. Exporter une Aire de Jeu\n9. Quitter\n";
+        std::cin>>valeur;
+        switch(valeur)
+        {
+            case 1 : jouer(); break;
+            case 2 : exporte(); break;
+            case 9 : exit(0); break;
+        }
+    }
+}
 
 int main()
 {
-    //mainMenu();
-    afficheConsole a;
-    AireDeJeu Adj{5,5};
-    a.afficheAdj(Adj);
-    std::cout<<std::endl;
-
-    point p(4,4);
-    point p1(2,2);
-    Adj.setValue(p,1);
-    Adj.setValue(p1,1);
-    a.afficheAdj(Adj);
-
-    std::cout<<std::endl;
-    //Adj.import("test.txt");
-    //a.afficheAdj(Adj);
-    //a.afficheJ(Adj);
-
+    mainMenu();
 }
