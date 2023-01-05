@@ -10,7 +10,7 @@ AireDeJeu::AireDeJeu(int largeur, int hauteur): d_Tab{}
     d_Tab.resize(hauteur);
     for(int i=0;i<d_Tab.size();i++)
     {
-        
+
         d_Tab[i].resize(largeur);
         for(int j =0; j<d_Tab[i].size();j++)
         {
@@ -50,26 +50,6 @@ point AireDeJeu::posJoueur() const
     }
 }
 
-void AireDeJeu::affiche() const
-{
-    for(int i=0; i<d_Tab.size();i++)
-    {
-        for(int j=0;j<d_Tab[0].size();j++)
-        {
-            if(d_Tab[i][j]==0)
-                std::cout<<'|'<<" "<<'|';
-            else if(d_Tab[i][j]==1)
-                std::cout<<'|'<<'J'<<'|';
-            else if(d_Tab[i][j]==2)
-                std::cout<<'|'<<'L'<<'|';
-            else if(d_Tab[i][j]==3)
-                std::cout<<'|'<<'T'<<'|';
-            else if(d_Tab[i][j]==4)
-                std::cout<<'|'<<'P'<<'|';
-        }
-        std::cout<<std::endl;
-    }
-}
 
 // MES AJOUTS:
 /* Structure du fichier:
@@ -103,15 +83,15 @@ bool AireDeJeu::import(const std::string& fichier)
             if(ist)
             {
                 ist>>largeur>>hauteur;
-                d_Tab.resize(hauteur);
+                d_Tab.resize(largeur);
                 for(int i=0;i<d_Tab.size();++i)
-                    d_Tab[i].resize(largeur);
+                    d_Tab[i].resize(hauteur);
                 for(int i=0;i<d_Tab.size();++i)
-                    for(int j=0;i<d_Tab[i].size();++j)
+                    for(int j=0;j<d_Tab[i].size();++j)
                     {
                         ist>>valeur;
                         d_Tab[i][j] = valeur;
-                    }  
+                    }
                 while(chaine != "END")
                     ist>>chaine;
                 if(ist)
@@ -141,7 +121,38 @@ bool AireDeJeu::import(const std::string& fichier)
     }
 }
 
-bool AireDeJeu::export(const std::string& fichier)
+void AireDeJeu::applyImport(std::vector<std::unique_ptr<joueur>> &joueurs,std::vector<std::unique_ptr<fauve>> &fauves, std::vector<std::unique_ptr<piegeAPic>> &pieges)
+{
+    //Choix joueur expert ou normal
+    bool estExpert=false;
+    std::cout<<"Joueur Expert ? True/False\n";
+    std::cin>>estExpert;
+    //Init tab fauves & pieges & joueurs
+
+    for(int i = 0; i < tailleL(); i++)
+    {
+        for(int j = 0; j < tailleC(); j++)
+        {
+            if(estOccupeType(1,point{i,j}))
+                {
+                    if(estExpert)
+                        joueurs.push_back(std::make_unique<joueurExpert>(point{i,j}));
+                    else
+                        joueurs.push_back(std::make_unique<joueurNormal>(point{i,j}));
+                }
+            else if(estOccupeType(2, point{i,j}))
+                fauves.push_back(std::make_unique<lion>(point{i,j}));
+
+            else if(estOccupeType(3, point{i,j}))
+                fauves.push_back(std::make_unique<tigre>(point{i,j}));
+
+            else if(estOccupeType(4, point{i,j}))
+                pieges.push_back(std::make_unique<piegeAPic>(point{i,j},4));
+        }
+    }
+
+}
+bool AireDeJeu::exporter(const std::string& fichier)
 {
     std::ofstream ost(fichier);
     if(ost)
@@ -152,7 +163,7 @@ bool AireDeJeu::export(const std::string& fichier)
             for(int j=0;j<d_Tab[i].size();++j)
                 ost<<d_Tab[i][j]<<" ";
             ost<<'\n';
-        }            
+        }
         ost<<"END";
         return true;
     }
@@ -162,3 +173,33 @@ bool AireDeJeu::export(const std::string& fichier)
         return false;
     }
 }
+
+
+
+void AireDeJeu::setValue(const point& p, int value)
+{
+    d_Tab[p.x()][p.y()]=value;
+}
+
+
+
+int AireDeJeu::tailleL() const
+{
+   return d_Tab.size();
+}
+
+int AireDeJeu::tailleC() const
+{
+    d_Tab[0].size();
+}
+
+
+
+
+
+
+
+
+
+
+

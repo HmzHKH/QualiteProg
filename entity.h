@@ -7,8 +7,6 @@
 #include <memory>
 #include "point.h"
 
-//A changer avec une classe Point
-struct Point{int x,y;}; //Temporaire, sera mis dans le "mainWindow"
 
 class AireDeJeu;
 class fauve;

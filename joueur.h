@@ -4,6 +4,8 @@
 
 #include "entity.h"
 
+#include "AireDeJeu.h"
+
 
 class joueur : public DynamicEntity{
 public:
