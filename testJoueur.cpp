@@ -76,7 +76,7 @@ TEST_CASE("Test  la position du joueur")
 
 
 
-//TEST DEPLACEMENT JOUEURNORMAL ET JOUEUREXPERT
+//TEST DEPLACEMENT JOUEURNORMAL ET JOUEUREXPERT a savoir que x et y sont inversées 
 
 
 TEST_CASE("Test le deplacement d'un joueur dans l'aire de jeu")
