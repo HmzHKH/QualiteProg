@@ -57,14 +57,7 @@ TEST_CASE("Test si le joueur meurt")
     REQUIRE_EQ(dead,j.estVivant());
 }
 
-TEST_CASE("Test si le joueur meurt")
-{
-    point pos{2,1};
-    joueurNormal j(pos);
-    bool dead = false;
-    j.setDeath();
-    REQUIRE_EQ(dead,j.estVivant());
-}
+
 
 TEST_CASE("Test  la position du joueur")
 {
