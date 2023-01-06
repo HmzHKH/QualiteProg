@@ -13,6 +13,7 @@ public:
     void setDeath();
     point position() const override;
     bool estVivant() const override;
+    void deplacementFauve(AireDeJeu& AdJ,const point & d_temp, int typeFauve);
     virtual void deplacement(AireDeJeu& AdJ, std::vector<std::unique_ptr<joueur>> &joueurs, std::vector<std::unique_ptr<fauve>> &fauves, std::vector<std::unique_ptr<piegeAPic>> &pieges) = 0;
 protected:
     point d_pos;
@@ -34,6 +35,7 @@ public:
 class tigre : public fauve{
 public:
     tigre(const point& pos);
+
     void deplacement(AireDeJeu& AdJ, std::vector<std::unique_ptr<joueur>> &joueurs,std::vector<std::unique_ptr<fauve>> &fauves, std::vector<std::unique_ptr<piegeAPic>> &pieges) override;
 };
 

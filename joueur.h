@@ -15,6 +15,7 @@ public:
     void setDeath();
     bool estVivant() const override;
     point position() const override;
+    void deplacementJoueur(AireDeJeu& AdJ,const point & d_temp);
     virtual void deplacement( AireDeJeu& AdJ, int valeur) = 0;
 protected:
     point d_pos;

@@ -11,7 +11,7 @@ TEST_CASE("Tester si un point est dans le tableau ")
 
 TEST_CASE("Tester si une case est libre")
 {
-    REQUIRE_UNARY(aire.estLibre(p));
+    REQUIRE_UNARY(aire.estOccupeType(0,p));
 }
 
 TEST_CASE("Renvoie si un type d'entite occupe une position donnee")

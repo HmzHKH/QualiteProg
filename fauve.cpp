@@ -24,6 +24,9 @@ bool fauve::estVivant() const
     return d_alive;
 }
 
+
+
+
 void killFauve(const point& p,std::vector<std::unique_ptr<fauve>> &fauves)
 {
     for(int i=0; i<fauves.size();i++)
@@ -49,6 +52,17 @@ void killPiegeAPic(const point& p, AireDeJeu& AdJ, std::vector<std::unique_ptr<p
             }
         }
     }
+}
+
+
+void fauve::deplacementFauve(AireDeJeu& AdJ, const point& d_temp, int typeFauve)
+{
+    if(AdJ.estDansTableau(d_temp) && AdJ.estOccupeType(0,d_temp))
+            {
+                AdJ.setValue(d_pos,0);
+                d_pos=d_temp;
+                AdJ.setValue(d_pos,typeFauve);
+            }
 }
 
 
@@ -80,16 +94,12 @@ void lion::deplacement(AireDeJeu& AdJ, std::vector<std::unique_ptr<joueur>> &jou
     if(AdJ.estOccupeType(3,temp)) //si le lion avance sur un tigre il le tue et prend sa place
     {
         killFauve(temp,fauves);
-        AdJ.setValue(d_pos,0);
-        d_pos=temp;
-        AdJ.setValue(d_pos,2);
+        deplacementFauve(AdJ,temp, 2);
     }
 
     else if(AdJ.estOccupeType(0,temp))// si le lion avance sur une position vide il prend cette place
     {
-        AdJ.setValue(d_pos,0);
-        d_pos=temp;
-        AdJ.setValue(d_pos,2);
+        deplacementFauve(AdJ,temp, 2);
     }
 
 
@@ -102,9 +112,7 @@ void lion::deplacement(AireDeJeu& AdJ, std::vector<std::unique_ptr<joueur>> &jou
 
     else if(AdJ.estOccupeType(1,temp)) //si le lion avance sur la case du joueur il le tue et il prend sa place
     {
-        AdJ.setValue(d_pos,0);
-        d_pos=temp;
-        AdJ.setValue(d_pos,2);
+        deplacementFauve(AdJ,temp, 2);
         joueurs[0]->setDeath();
     }
 }
@@ -156,16 +164,12 @@ void tigre::deplacement(AireDeJeu& AdJ, std::vector<std::unique_ptr<joueur>> &jo
     if(AdJ.estOccupeType(2,temp)) //s il avance vers un lion il le tue
     {
         killFauve(temp,fauves);
-        AdJ.setValue(d_pos,0);
-        d_pos=temp;
-        AdJ.setValue(d_pos,3);
+        deplacementFauve(AdJ,temp, 3);
     }
 
     else if(AdJ.estOccupeType(0,temp))//si cest vide il avance
     {
-        AdJ.setValue(d_pos,0);
-        d_pos=temp;
-        AdJ.setValue(d_pos,3);
+        deplacementFauve(AdJ,temp, 3);
     }
 
     else if(AdJ.estOccupeType(4,temp))// si le tigre avance vers un piege il se deplace et meurt si le piege n'est pas vide(pour le moment il y a pas d'arbres)
@@ -177,9 +181,7 @@ void tigre::deplacement(AireDeJeu& AdJ, std::vector<std::unique_ptr<joueur>> &jo
 
     else if(AdJ.estOccupeType(1,temp))// si le tigre avance vers le joueur il le tue
     {
-        AdJ.setValue(d_pos,0);
-        d_pos=temp;
-        AdJ.setValue(d_pos,3);
+        deplacementFauve(AdJ,temp, 3);
         joueurs[0]->setDeath();
     }
 }
