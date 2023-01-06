@@ -30,10 +30,6 @@ bool AireDeJeu::estDansTableau(const point& p) const
 
 }
 
-bool AireDeJeu::estLibre(const point& p) const
-{
-    return d_Tab[p.x()][p.y()] == 0;
-}
 
 bool AireDeJeu::estOccupeType(int e, const point& p) const
 {

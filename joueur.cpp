@@ -38,12 +38,12 @@ joueurNormal::joueurNormal(const point& pos) : joueur{pos}
 void joueurNormal::deplacement( AireDeJeu& AdJ,int valeur)
 {
     point d_temp = d_pos;
-    switch(valeur)
+    switch(valeur) //un switch qui suite aux valeur numeriques reçue il va executer un deplacement
     {
-        case 1:
+        case 1: // le joueur se deplace vers la diagonales bas gauche
             d_temp.sety(d_temp.y()-1);
             d_temp.setx(d_temp.x()+1);
-            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
+            if(AdJ.estDansTableau(d_temp) && AdJ.estOccupeType(0,d_temp))
             {
                 AdJ.setValue(d_pos,0);
                 d_pos=d_temp;
@@ -51,66 +51,66 @@ void joueurNormal::deplacement( AireDeJeu& AdJ,int valeur)
             }
             break;
 
-        case 2:
+        case 2: //deplacement vers le bas
             d_temp.setx(d_temp.x()+1);
-            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
+            if(AdJ.estDansTableau(d_temp) && AdJ.estOccupeType(0,d_temp))
             {
                 AdJ.setValue(d_pos,0);
                 d_pos=d_temp;
                 AdJ.setValue(d_pos,1);
             }
             break;
-        case 3:
+        case 3: //deplacement vers la diagonale bas droite
             d_temp.sety(d_temp.y()+1);
             d_temp.setx(d_temp.x()+1);
-            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
+            if(AdJ.estDansTableau(d_temp) && AdJ.estOccupeType(0,d_temp))
             {
                 AdJ.setValue(d_pos,0);
                 d_pos=d_temp;
                 AdJ.setValue(d_pos,1);
             }
             break;
-        case 4:
+        case 4: //deplacement vers la gauche
             d_temp.sety(d_temp.y()-1);
-            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
+            if(AdJ.estDansTableau(d_temp) && AdJ.estOccupeType(0,d_temp))
             {
                 AdJ.setValue(d_pos,0);
                 d_pos=d_temp;
                 AdJ.setValue(d_pos,1);
             }
             break;
-        case 6:
+        case 6://deplacement vers la droite
             d_temp.sety(d_temp.y()+1);
-            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
+            if(AdJ.estDansTableau(d_temp) && AdJ.estOccupeType(0,d_temp))
             {
                 AdJ.setValue(d_pos,0);
                 d_pos=d_temp;
                 AdJ.setValue(d_pos,1);
             }
             break;
-        case 7:
+        case 7://deplacement vers la diagonale haut gauche
             d_temp.sety(d_temp.y()-1);
             d_temp.setx(d_temp.x()-1);
-            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
+            if(AdJ.estDansTableau(d_temp) && AdJ.estOccupeType(0,d_temp))
             {
                 AdJ.setValue(d_pos,0);
                 d_pos=d_temp;
                 AdJ.setValue(d_pos,1);
             }
             break;
-        case 8:
+        case 8: //deplacement vers le haut
             d_temp.setx(d_temp.x()-1);
-            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
+            if(AdJ.estDansTableau(d_temp) && AdJ.estOccupeType(0,d_temp))
             {
                 AdJ.setValue(d_pos,0);
                 d_pos=d_temp;
                 AdJ.setValue(d_pos,1);
             }
             break;
-        case 9:
+        case 9: ////deplacement vers la diagonale haut droite
             d_temp.sety(d_temp.y()+1);
             d_temp.setx(d_temp.x()-1);
-            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
+            if(AdJ.estDansTableau(d_temp) && AdJ.estOccupeType(0,d_temp))
             {
                 AdJ.setValue(d_pos,0);
                 d_pos=d_temp;
@@ -118,20 +118,20 @@ void joueurNormal::deplacement( AireDeJeu& AdJ,int valeur)
             }
             break;
     }
-    d_lifetime += 1;
+    d_lifetime += 1; //augmentation du score à la fin d'un mouvement executé
 }
 
 joueurExpert::joueurExpert(const point& pos) : joueur{pos}
 {}
 
-void joueurExpert::deplacement( AireDeJeu& AdJ,int valeur)
+void joueurExpert::deplacement( AireDeJeu& AdJ,int valeur) //meme chose que pour le joueurNormal mais sans mouvement h et v
 {
     point d_temp = d_pos;
     switch(valeur)
     {
         case 2:
             d_temp.setx(d_temp.x()+1);
-            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
+            if(AdJ.estDansTableau(d_temp) && AdJ.estOccupeType(0,d_temp))
             {
                 AdJ.setValue(d_pos,0);
                 d_pos=d_temp;
@@ -140,7 +140,7 @@ void joueurExpert::deplacement( AireDeJeu& AdJ,int valeur)
             break;
         case 4:
             d_temp.sety(d_temp.y()-1);
-            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
+            if(AdJ.estDansTableau(d_temp) && AdJ.estOccupeType(0,d_temp))
             {
                 AdJ.setValue(d_pos,0);
                 d_pos=d_temp;
@@ -149,7 +149,7 @@ void joueurExpert::deplacement( AireDeJeu& AdJ,int valeur)
             break;
         case 6:
             d_temp.sety(d_temp.y()+1);
-            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
+            if(AdJ.estDansTableau(d_temp) && AdJ.estOccupeType(0,d_temp))
             {
                 AdJ.setValue(d_pos,0);
                 d_pos=d_temp;
@@ -158,7 +158,7 @@ void joueurExpert::deplacement( AireDeJeu& AdJ,int valeur)
             break;
         case 8:
             d_temp.setx(d_temp.x()-1);
-            if(AdJ.estDansTableau(d_temp) && AdJ.estLibre(d_temp))
+            if(AdJ.estDansTableau(d_temp) && AdJ.estOccupeType(0,d_temp))
             {
                 AdJ.setValue(d_pos,0);
                 d_pos=d_temp;

@@ -6,9 +6,10 @@
 #include <iostream>
 #include <vector>
 
-bool gameOver;
+bool gameOver; //variable qui sert à stopper la boucle principale
 bool menu = true;
-void ajoutEdit(AireDeJeu& e, afficheConsole& a)
+
+void ajoutEdit(AireDeJeu& e, afficheConsole& a) //methode qui permet l'edition d'une aire de jeu
 {
     bool ajouter=true;
     while(ajouter)
@@ -51,7 +52,7 @@ void ajoutEdit(AireDeJeu& e, afficheConsole& a)
     }
 }
 
-void creeAdJ()
+void creeAdJ() // methode qui permet la creation d'une aire de jeu a partir de la console
 {
     afficheConsole a;
     int longueur,largeur;
@@ -65,11 +66,11 @@ void creeAdJ()
     std::cout<<"Fichier exporte avec succes dans export.txt\n";
 }
 
-void editImport()
+void editImport() //methode permettant de modifier le fichier importé
 {
     afficheConsole a;
     AireDeJeu adj{10,10};
-    adj.import("import.txt");
+    adj.import("import.txt"); //fichier importe
     a.afficheAdj(adj);
     ajoutEdit(adj,a);
     adj.exporter("export.txt");
@@ -77,7 +78,7 @@ void editImport()
 
 }
 
-void exporte()
+void exporte() //methode qui permet d exporter l'aire de jeu sur le fichier export.Txt
 {
     int choix =0;
     while(choix<1 || choix>3)
@@ -87,12 +88,12 @@ void exporte()
     }
     switch(choix)
     {
-        case 1: creeAdJ();break;  //aleatoireAdJ(e); Idee de type d'aire de jeu
+        case 1: creeAdJ();break;
         case 2: editImport();break;
         case 3: break;
     }
 }
-void jeu(AireDeJeu& adj, afficheConsole& a)
+void jeu(AireDeJeu& adj, afficheConsole& a) //boucle principale du jeu
 {
     //Init tab joueurs
     std::vector<std::unique_ptr<joueur>> joueurs;
@@ -100,7 +101,7 @@ void jeu(AireDeJeu& adj, afficheConsole& a)
     std::vector<std::unique_ptr<fauve>> fauves;
     //Init tab pieges
     std::vector<std::unique_ptr<piegeAPic>> pieges;
-    adj.applyImport(joueurs,fauves,pieges);
+    adj.applyImport(joueurs,fauves,pieges); //importation depuis l aire de jeu des fauves pieges et du joueur dans les tableaux respectif
 
     //boucle de jeu tour par tour
     while (gameOver==false && fauves.empty()==false)
@@ -117,7 +118,7 @@ void jeu(AireDeJeu& adj, afficheConsole& a)
         {
             if(fauves[i]->estVivant())
             {
-                fauves[i]->deplacement(adj,joueurs,fauves,pieges);// on deplace les fauves
+                fauves[i]->deplacement(adj,joueurs,fauves,pieges);// on deplace chaque  fauve du tableau
                 if(joueurs[0]->estVivant()==false)
                 {
                     gameOver=true;
@@ -143,7 +144,7 @@ void jeu(AireDeJeu& adj, afficheConsole& a)
     a.afficheGameOver();
     std::cout<<"GameOver\nRetour au menu...\n";
 }
-void jouer()
+void jouer() //initialisation de l'aire de jeu et lance la boucle principale
 {
     gameOver=false;
     //Init afficheur
@@ -164,17 +165,43 @@ void jouer()
     }
 }
 
+void Tutoriel()
+{
+    std::cout<<R"( Voici les commandes de jeu, RAPPEL un joueur expert se deplace qu en diagonales:
+
+
+                            7     8      9
+                            ^     ^     ^
+                             \    |    /
+                              \   |   /
+                               \  |  /
+                                \ | /
+                        4<--------O-------->6
+                                 /|\
+                                / | \
+                               /  |  \
+                              /   |   \
+                             v    v    v
+
+                             1    2     3
+
+
+
+)" << '\n';
+}
+
 void mainMenu()
 {
     while (menu)
     {
         int valeur;
-        std::cout<<"Saisissez ce que vous voulez faire:\n1. Jouer\n2. Exporter une Aire de Jeu\n9. Quitter\n";
+        std::cout<<"Saisissez ce que vous voulez faire:\n1. Jouer\n2. Exporter une Aire de Jeu\n3. Tutoriel \n9. Quitter\n";
         std::cin>>valeur;
         switch(valeur)
         {
             case 1 : jouer(); break;
             case 2 : exporte(); break;
+            case 3 : Tutoriel(); break;
             case 9 : exit(0); break;
         }
     }
